@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Окно 180 дней — пересечение периодов</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root{
+    --paper: #f6f3ea;
+    --paper-line: #ddd6c2;
+    --ink: #262418;
+    --ink-soft: #6b6552;
+    --teal: #3f7d78;
+    --teal-soft: #cfe3e0;
+    --amber: #d98c2b;
+    --amber-soft: rgba(217,140,43,0.16);
+    --amber-line: #d98c2b;
+    --red: #b3492f;
+  }
+
+  *{ box-sizing: border-box; }
+
+  body{
+    margin:0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    padding: 32px 24px 60px;
+  }
+
+  .wrap{ max-width: 1180px; margin: 0 auto; }
+
+  header{ margin-bottom: 28px; }
+  header .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin: 0 0 6px;
+  }
+  h1{
+    font-size: 28px;
+    margin: 0 0 6px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  header p{
+    margin:0;
+    color: var(--ink-soft);
+    font-size: 14.5px;
+    max-width: 640px;
+    line-height: 1.5;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns: 340px 1fr;
+    gap: 28px;
+    align-items:start;
+  }
+  @media (max-width: 880px){
+    .grid{ grid-template-columns: 1fr; }
+  }
+
+  .panel{
+    background: #fffdf8;
+    border: 1px solid var(--paper-line);
+    border-radius: 10px;
+    padding: 18px 18px 8px;
+  }
+
+  .panel h2{
+    font-size: 13px;
+    font-family:'IBM Plex Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--ink-soft);
+    margin: 0 0 14px;
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+  }
+
+  .period-row{
+    display:grid;
+    grid-template-columns: 22px 1fr 1fr 20px;
+    gap: 6px;
+    align-items:center;
+    margin-bottom: 10px;
+  }
+  .period-row .idx{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+    text-align:right;
+  }
+  .period-row .swatch{
+    width: 10px; height: 10px; border-radius: 2px;
+    justify-self:center;
+  }
+  .period-row input[type=date]{
+    width: 100%;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    padding: 6px 6px;
+    border: 1px solid var(--paper-line);
+    border-radius: 6px;
+    background: #fff;
+    color: var(--ink);
+  }
+  .period-row input[type=date]:focus{
+    outline: 2px solid var(--teal);
+    outline-offset: 1px;
+  }
+  .period-row .clear-btn{
+    border:none;
+    background:none;
+    color: var(--ink-soft);
+    cursor:pointer;
+    font-size: 15px;
+    line-height:1;
+    padding: 2px;
+  }
+  .period-row .clear-btn:hover{ color: var(--red); }
+  .period-row.invalid input[type=date]{ border-color: var(--red); }
+
+  .col-labels{
+    display:grid;
+    grid-template-columns: 22px 1fr 1fr 20px;
+    gap:6px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-bottom: 8px;
+  }
+  .col-labels span:nth-child(2){ padding-left: 2px; }
+
+  /* right side */
+  .readout{
+    background: var(--ink);
+    color: #fdf9ee;
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-bottom: 20px;
+    display:flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .readout .big{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 44px;
+    font-weight: 700;
+    color: var(--amber);
+    line-height: 1;
+  }
+  .readout .big span{ font-size: 16px; color: #fdf9ee; font-weight:500; margin-left: 6px;}
+  .readout .sub{
+    font-size: 12.5px;
+    color: #cfc9b5;
+    font-family:'IBM Plex Mono', monospace;
+    text-align: right;
+    line-height: 1.6;
+  }
+  .readout .sub b{ color: #fdf9ee; }
+
+  .track-panel{ padding-bottom: 18px; }
+
+  .slider-row{
+    display:flex; align-items:center; gap: 12px;
+    margin: 4px 4px 18px;
+  }
+  .slider-row input[type=range]{
+    flex:1;
+    accent-color: var(--amber);
+  }
+  .nudge{
+    font-family:'IBM Plex Mono', monospace;
+    border:1px solid var(--paper-line);
+    background:#fff;
+    border-radius:6px;
+    width: 28px; height: 28px;
+    cursor:pointer;
+    font-size: 14px;
+  }
+  .nudge:hover{ border-color: var(--teal); color: var(--teal); }
+
+  .ruler-scroll{
+    overflow-x: auto;
+    padding-bottom: 6px;
+  }
+
+  .ruler{
+    position: relative;
+    min-width: 900px;
+    user-select: none;
+  }
+
+  .axis{
+    position: relative;
+    height: 26px;
+    border-bottom: 1px solid var(--paper-line);
+    margin-bottom: 4px;
+  }
+  .month-tick{
+    position:absolute;
+    top:0; bottom:0;
+    border-left: 1px solid var(--paper-line);
+  }
+  .month-tick .lbl{
+    position:absolute;
+    top: 2px; left: 4px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--ink-soft);
+    white-space:nowrap;
+  }
+
+  .rows{
+    position: relative;
+  }
+  .row-track{
+    position: relative;
+    height: 26px;
+    border-bottom: 1px dashed #eae4d2;
+  }
+  .period-bar{
+    position:absolute;
+    top: 5px; height: 16px;
+    border-radius: 4px;
+    background: var(--teal);
+    opacity: 0.28;
+  }
+  .period-bar-overlap{
+    position:absolute;
+    top: 5px; height: 16px;
+    border-radius: 4px;
+    box-shadow: inset 0 0 0 1.5px rgba(38,36,24,0.35);
+  }
+  .overlap-note{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-soft);
+    display:flex;
+    align-items:center;
+    gap: 8px;
+    margin: 12px 4px 0;
+  }
+  .overlap-note .sample{
+    display:inline-flex; height: 10px; width: 42px; border-radius: 3px; overflow:hidden;
+  }
+  .overlap-note .sample span{ flex:1; }
+  .overlap-note .sample .dim{ background: var(--teal); opacity:0.28; }
+  .overlap-note .sample .full{ background: var(--teal); }
+  .empty-hint{
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-family:'IBM Plex Mono', monospace;
+    padding: 20px 4px;
+  }
+
+  .window-layer{
+    position:absolute;
+    top:0; bottom:0;
+    pointer-events:none;
+  }
+  .window-box{
+    position:absolute;
+    top: -30px; bottom: 0;
+    background: rgba(217,140,43,0.05);
+    border-left: 2px solid var(--amber-line);
+    border-right: 2px solid var(--amber-line);
+    cursor: grab;
+    pointer-events: auto;
+  }
+  .window-box::before,
+  .window-box::after{
+    content:'';
+    position:absolute;
+    top: 30px; bottom: 0;
+    width: 0;
+    border-left: 1px dashed rgba(217,140,43,0.55);
+  }
+  .window-box::before{ left: 0; }
+  .window-box::after{ right: 0; }
+  .window-box:active{ cursor: grabbing; }
+  .window-box .tag{
+    position:absolute;
+    top: -30px; left: 0;
+    transform: translateY(0);
+    background: var(--amber);
+    color: #fff;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    padding: 3px 7px;
+    border-radius: 4px 4px 0 0;
+    white-space: nowrap;
+  }
+  .window-box .tag.right{
+    left: auto; right: 0;
+    border-radius: 4px 4px 0 0;
+  }
+
+  .legend{
+    display:flex; gap: 16px; flex-wrap: wrap;
+    margin-top: 14px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--ink-soft);
+  }
+  .legend .item{ display:flex; align-items:center; gap:6px; }
+  .legend .sw{ width:10px; height:10px; border-radius:2px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Планировщик · 180-дневное окно</p>
+    <h1>Пересечение периодов с подвижным окном</h1>
+    <p>Укажите до 10 временных отрезков. Двигайте окно шириной 180 дней по календарю — счётчик покажет, сколько дней суммарно изо всех периодов попадает внутрь окна в текущей позиции.</p>
+  </header>
+
+  <div class="grid">
+    <div class="panel" id="periods-panel">
+      <h2>Периоды <span id="count-lbl">0 / 10</span></h2>
+      <div class="col-labels"><span></span><span>Начало</span><span>Конец</span><span></span></div>
+      <div id="periods-list"></div>
+    </div>
+
+    <div>
+      <div class="readout">
+        <div class="big" id="overlap-days">0<span>дней в окне</span></div>
+        <div class="sub" id="window-range">окно: —</div>
+      </div>
+
+      <div class="panel track-panel">
+        <h2>Календарь <span id="domain-range"></span></h2>
+        <div class="slider-row">
+          <button class="nudge" id="nudge-left" title="сдвинуть окно назад">◀</button>
+          <input type="range" id="window-slider" min="0" max="0" value="0" step="1">
+          <button class="nudge" id="nudge-right" title="сдвинуть окно вперёд">▶</button>
+        </div>
+        <div class="ruler-scroll">
+          <div class="ruler" id="ruler">
+            <div class="axis" id="axis"></div>
+            <div class="rows" id="rows"></div>
+            <div class="window-layer" id="window-layer">
+              <div class="window-box" id="window-box">
+                <div class="tag" id="tag-left"></div>
+                <div class="tag right" id="tag-right"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="legend" id="legend"></div>
+        <div class="overlap-note">
+          <span class="sample"><span class="dim"></span><span class="full"></span><span class="dim"></span></span>
+          насыщенный участок с рамкой — часть периода внутри окна; бледный — вне окна
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const MS_DAY = 86400000;
+const WINDOW_DAYS = 180;
+const MAX_PERIODS = 10;
+const COLORS = ['#3f7d78','#b3492f','#7a6ba8','#c98b2c','#4a7fb5','#8c9a3d','#a85a7e','#5c8f8a','#c26b3f','#6f7bb0'];
+
+const listEl = document.getElementById('periods-list');
+const countLbl = document.getElementById('count-lbl');
+
+function toDate(str){
+  if(!str) return null;
+  return new Date(str + 'T00:00:00Z');
+}
+function fmt(d){
+  if(!d) return '—';
+  return d.toLocaleDateString('ru-RU', {day:'2-digit', month:'short', year:'numeric', timeZone:'UTC'});
+}
+function daysBetween(a,b){ return Math.round((b-a)/MS_DAY); }
+
+// build 10 rows
+let rows = [];
+for(let i=0;i<MAX_PERIODS;i++){
+  const row = document.createElement('div');
+  row.className = 'period-row';
+  row.innerHTML = `
+    <span class="idx">${i+1}</span>
+    <span class="swatch" style="background:${COLORS[i]}"></span>
+    <input type="date" class="start-input">
+    <input type="date" class="end-input">
+    <button class="clear-btn" title="очистить">×</button>
+  `;
+  // fix column layout: swatch should sit before inputs visually but grid col2 = idx col.. adjust below
+  listEl.appendChild(row);
+  rows.push(row);
+}
+
+// re-lay grid columns properly: idx | swatch is squeezed; fix by adjusting grid-template via inline style already set (22px 1fr 1fr 20px) -> we have 5 children not 4. Fix template.
+document.querySelectorAll('.period-row').forEach(r=>{
+  r.style.gridTemplateColumns = '18px 12px 1fr 1fr 20px';
+});
+
+function getPeriods(){
+  const result = [];
+  rows.forEach((row, i)=>{
+    const s = row.querySelector('.start-input').value;
+    const e = row.querySelector('.end-input').value;
+    row.classList.remove('invalid');
+    if(s && e){
+      const sd = toDate(s), ed = toDate(e);
+      if(ed < sd){
+        row.classList.add('invalid');
+        return;
+      }
+      result.push({start: sd, end: ed, color: COLORS[i], idx: i+1});
+    }
+  });
+  return result;
+}
+
+let windowStartOffset = 0; // days from domainStart
+let domainStart, domainEnd, domainDays;
+
+function recompute(){
+  const periods = getPeriods();
+  countLbl.textContent = periods.length + ' / 10';
+
+  // domain
+  const today = new Date(Date.UTC(new Date().getUTCFullYear(), new Date().getUTCMonth(), new Date().getUTCDate()));
+  if(periods.length){
+    let minS = periods[0].start, maxE = periods[0].end;
+    periods.forEach(p=>{
+      if(p.start < minS) minS = p.start;
+      if(p.end > maxE) maxE = p.end;
+    });
+    domainStart = new Date(minS.getTime() - 15*MS_DAY);
+    domainEnd = new Date(maxE.getTime() + 15*MS_DAY);
+  } else {
+    domainStart = today;
+    domainEnd = new Date(today.getTime() + 180*MS_DAY);
+  }
+  domainDays = daysBetween(domainStart, domainEnd) + 1;
+  if(domainDays < WINDOW_DAYS + 30){
+    domainEnd = new Date(domainStart.getTime() + (WINDOW_DAYS + 29)*MS_DAY);
+    domainDays = daysBetween(domainStart, domainEnd) + 1;
+  }
+
+  const maxOffset = Math.max(0, domainDays - WINDOW_DAYS);
+  windowStartOffset = Math.min(windowStartOffset, maxOffset);
+  windowStartOffset = Math.max(0, windowStartOffset);
+
+  const slider = document.getElementById('window-slider');
+  slider.max = maxOffset;
+  slider.value = windowStartOffset;
+
+  document.getElementById('domain-range').textContent = `${fmt(domainStart)} — ${fmt(domainEnd)}`;
+
+  renderAxis();
+  const bounds = currentWindowBounds();
+  renderRows(periods, bounds);
+  renderLegend(periods);
+  renderWindow(periods, bounds);
+}
+
+function currentWindowBounds(){
+  const wStartOffset = windowStartOffset;
+  const wEndOffset = wStartOffset + WINDOW_DAYS - 1;
+  const wStart = new Date(domainStart.getTime() + wStartOffset*MS_DAY);
+  const wEnd = new Date(domainStart.getTime() + wEndOffset*MS_DAY);
+  return {wStart, wEnd, wStartOffset, wEndOffset};
+}
+
+function pctFor(dateOffsetDays){
+  return (dateOffsetDays / domainDays) * 100;
+}
+
+function renderAxis(){
+  const axis = document.getElementById('axis');
+  axis.innerHTML = '';
+  // iterate months
+  let cur = new Date(Date.UTC(domainStart.getUTCFullYear(), domainStart.getUTCMonth(), 1));
+  if(cur < domainStart){ /* fine, we still show from first of month position possibly negative, clamp */ }
+  while(cur <= domainEnd){
+    const offset = daysBetween(domainStart, cur);
+    if(offset >= 0){
+      const pct = pctFor(offset);
+      const tick = document.createElement('div');
+      tick.className = 'month-tick';
+      tick.style.left = pct + '%';
+      const lbl = document.createElement('div');
+      lbl.className = 'lbl';
+      lbl.textContent = cur.toLocaleDateString('ru-RU', {month:'short', year:'2-digit', timeZone:'UTC'});
+      tick.appendChild(lbl);
+      axis.appendChild(tick);
+    }
+    cur = new Date(Date.UTC(cur.getUTCFullYear(), cur.getUTCMonth()+1, 1));
+  }
+}
+
+function renderRows(periods, bounds){
+  const rowsEl = document.getElementById('rows');
+  rowsEl.innerHTML = '';
+  if(!periods.length){
+    const hint = document.createElement('div');
+    hint.className = 'empty-hint';
+    hint.textContent = 'Добавьте даты слева — периоды появятся здесь на календаре.';
+    rowsEl.appendChild(hint);
+    return;
+  }
+  const wStart = bounds.wStart, wEnd = bounds.wEnd;
+  periods.forEach(p=>{
+    const track = document.createElement('div');
+    track.className = 'row-track';
+
+    // full period, muted
+    const startOff = Math.max(0, daysBetween(domainStart, p.start));
+    const endOff = Math.min(domainDays-1, daysBetween(domainStart, p.end));
+    const left = pctFor(startOff);
+    const width = pctFor(endOff - startOff + 1);
+    const bar = document.createElement('div');
+    bar.className = 'period-bar';
+    bar.style.left = left + '%';
+    bar.style.width = Math.max(width, 0.3) + '%';
+    bar.style.background = p.color;
+    bar.title = `Период ${p.idx}: ${fmt(p.start)} — ${fmt(p.end)}`;
+    track.appendChild(bar);
+
+    // overlapping segment, highlighted
+    const os = p.start > wStart ? p.start : wStart;
+    const oe = p.end < wEnd ? p.end : wEnd;
+    if(oe >= os){
+      const oStartOff = Math.max(0, daysBetween(domainStart, os));
+      const oEndOff = Math.min(domainDays-1, daysBetween(domainStart, oe));
+      const oLeft = pctFor(oStartOff);
+      const oWidth = pctFor(oEndOff - oStartOff + 1);
+      const overlapDays = daysBetween(os, oe) + 1;
+      const seg = document.createElement('div');
+      seg.className = 'period-bar-overlap';
+      seg.style.left = oLeft + '%';
+      seg.style.width = Math.max(oWidth, 0.3) + '%';
+      seg.style.background = p.color;
+      seg.title = `Период ${p.idx}: пересечение с окном — ${overlapDays} дн. (${fmt(os)} — ${fmt(oe)})`;
+      track.appendChild(seg);
+    }
+
+    rowsEl.appendChild(track);
+  });
+}
+
+function renderLegend(periods){
+  const legend = document.getElementById('legend');
+  legend.innerHTML = '';
+  periods.forEach(p=>{
+    const item = document.createElement('div');
+    item.className = 'item';
+    item.innerHTML = `<span class="sw" style="background:${p.color}"></span> №${p.idx}: ${fmt(p.start)} — ${fmt(p.end)}`;
+    legend.appendChild(item);
+  });
+}
+
+function renderWindow(periods, bounds){
+  if(!bounds) bounds = currentWindowBounds();
+  const {wStart, wEnd, wStartOffset} = bounds;
+
+  const box = document.getElementById('window-box');
+  const left = pctFor(wStartOffset);
+  const width = pctFor(WINDOW_DAYS);
+  box.style.left = left + '%';
+  box.style.width = width + '%';
+
+  document.getElementById('tag-left').textContent = fmt(wStart);
+  document.getElementById('tag-right').textContent = fmt(wEnd);
+  document.getElementById('window-range').innerHTML = `окно: <b>${fmt(wStart)} — ${fmt(wEnd)}</b> (180 дней)`;
+
+  let total = 0;
+  periods.forEach(p=>{
+    const os = p.start > wStart ? p.start : wStart;
+    const oe = p.end < wEnd ? p.end : wEnd;
+    if(oe >= os){
+      total += daysBetween(os, oe) + 1;
+    }
+  });
+  document.getElementById('overlap-days').innerHTML = total + '<span>дней в окне</span>';
+}
+
+// events: inputs
+listEl.addEventListener('input', recompute);
+listEl.addEventListener('click', (e)=>{
+  if(e.target.classList.contains('clear-btn')){
+    const row = e.target.closest('.period-row');
+    row.querySelector('.start-input').value = '';
+    row.querySelector('.end-input').value = '';
+    recompute();
+  }
+});
+
+function refreshWindowAndBars(){
+  const periods = getPeriods();
+  const bounds = currentWindowBounds();
+  renderWindow(periods, bounds);
+  renderRows(periods, bounds);
+}
+
+// slider
+const slider = document.getElementById('window-slider');
+slider.addEventListener('input', ()=>{
+  windowStartOffset = parseInt(slider.value, 10);
+  refreshWindowAndBars();
+});
+
+document.getElementById('nudge-left').addEventListener('click', ()=>{
+  windowStartOffset = Math.max(0, windowStartOffset - 7);
+  slider.value = windowStartOffset;
+  refreshWindowAndBars();
+});
+document.getElementById('nudge-right').addEventListener('click', ()=>{
+  windowStartOffset = Math.min(parseInt(slider.max,10), windowStartOffset + 7);
+  slider.value = windowStartOffset;
+  refreshWindowAndBars();
+});
+
+// drag on window box
+const windowBox = document.getElementById('window-box');
+const ruler = document.getElementById('ruler');
+let dragging = false;
+let dragStartX = 0;
+let dragStartOffset = 0;
+
+windowBox.addEventListener('pointerdown', (e)=>{
+  dragging = true;
+  dragStartX = e.clientX;
+  dragStartOffset = windowStartOffset;
+  windowBox.setPointerCapture(e.pointerId);
+});
+windowBox.addEventListener('pointermove', (e)=>{
+  if(!dragging) return;
+  const rulerWidth = ruler.getBoundingClientRect().width;
+  const dxPx = e.clientX - dragStartX;
+  const dxDays = (dxPx / rulerWidth) * domainDays;
+  let newOffset = Math.round(dragStartOffset + dxDays);
+  const maxOffset = Math.max(0, domainDays - WINDOW_DAYS);
+  newOffset = Math.max(0, Math.min(maxOffset, newOffset));
+  windowStartOffset = newOffset;
+  slider.value = windowStartOffset;
+  refreshWindowAndBars();
+});
+windowBox.addEventListener('pointerup', (e)=>{
+  dragging = false;
+  windowBox.releasePointerCapture(e.pointerId);
+});
+
+// initial demo values
+rows[0].querySelector('.start-input').value = '2026-01-10';
+rows[0].querySelector('.end-input').value = '2026-04-05';
+rows[1].querySelector('.start-input').value = '2026-03-01';
+rows[1].querySelector('.end-input').value = '2026-07-20';
+rows[2].querySelector('.start-input').value = '2026-08-15';
+rows[2].querySelector('.end-input').value = '2026-11-30';
+
+recompute();
+</script>
+</body>
+</html>
