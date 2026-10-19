@@ -16,7 +16,6 @@
     --teal-soft: #cfe3e0;
     --amber: #d98c2b;
     --amber-soft: rgba(217,140,43,0.16);
-    --amber-line: #d98c2b;
     --red: #b3492f;
   }
 
@@ -30,7 +29,7 @@
     padding: 32px 24px 60px;
   }
 
-  .wrap{ max-width: 1180px; margin: 0 auto; }
+  .wrap{ max-width: 1200px; margin: 0 auto; }
 
   header{ margin-bottom: 28px; }
   header .eyebrow{
@@ -41,37 +40,24 @@
     color: var(--teal);
     margin: 0 0 6px;
   }
-  h1{
-    font-size: 28px;
-    margin: 0 0 6px;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-  }
-  header p{
-    margin:0;
-    color: var(--ink-soft);
-    font-size: 14.5px;
-    max-width: 640px;
-    line-height: 1.5;
-  }
+  h1{ font-size: 28px; margin: 0 0 6px; font-weight: 700; letter-spacing: -0.01em; }
+  header p{ margin:0; color: var(--ink-soft); font-size: 14.5px; max-width: 680px; line-height: 1.5; }
 
   .grid{
     display:grid;
-    grid-template-columns: 340px 1fr;
+    grid-template-columns: 372px 1fr;
     gap: 28px;
     align-items:start;
   }
-  @media (max-width: 880px){
-    .grid{ grid-template-columns: 1fr; }
-  }
+  .grid > *{ min-width: 0; }
+  @media (max-width: 900px){ .grid{ grid-template-columns: 1fr; } }
 
   .panel{
     background: #fffdf8;
     border: 1px solid var(--paper-line);
     border-radius: 10px;
-    padding: 18px 18px 8px;
+    padding: 18px 18px 10px;
   }
-
   .panel h2{
     font-size: 13px;
     font-family:'IBM Plex Mono', monospace;
@@ -84,9 +70,10 @@
     align-items:center;
   }
 
+  /* ---------- список периодов ---------- */
   .period-row{
     display:grid;
-    grid-template-columns: 22px 1fr 1fr 20px;
+    grid-template-columns: 18px 12px 1fr 22px;
     gap: 6px;
     align-items:center;
     margin-bottom: 10px;
@@ -97,50 +84,35 @@
     color: var(--ink-soft);
     text-align:right;
   }
-  .period-row .swatch{
-    width: 10px; height: 10px; border-radius: 2px;
-    justify-self:center;
-  }
-  .period-row input[type=date]{
-    width: 100%;
-    font-family: 'IBM Plex Mono', monospace;
+  .period-row .swatch{ width: 10px; height: 10px; border-radius: 2px; justify-self:center; }
+  .range-btn{
+    width:100%;
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+    gap: 8px;
+    text-align:left;
+    font-family:'IBM Plex Mono', monospace;
     font-size: 12.5px;
-    padding: 6px 6px;
+    padding: 8px 10px;
     border: 1px solid var(--paper-line);
     border-radius: 6px;
     background: #fff;
     color: var(--ink);
-  }
-  .period-row input[type=date]:focus{
-    outline: 2px solid var(--teal);
-    outline-offset: 1px;
-  }
-  .period-row .clear-btn{
-    border:none;
-    background:none;
-    color: var(--ink-soft);
     cursor:pointer;
-    font-size: 15px;
-    line-height:1;
-    padding: 2px;
   }
-  .period-row .clear-btn:hover{ color: var(--red); }
-  .period-row.invalid input[type=date]{ border-color: var(--red); }
-
-  .col-labels{
-    display:grid;
-    grid-template-columns: 22px 1fr 1fr 20px;
-    gap:6px;
-    font-family:'IBM Plex Mono', monospace;
-    font-size: 10.5px;
-    color: var(--ink-soft);
-    text-transform: uppercase;
-    letter-spacing: .04em;
-    margin-bottom: 8px;
+  .range-btn:hover{ border-color: var(--teal); }
+  .range-btn:focus-visible{ outline: 2px solid var(--teal); outline-offset: 1px; }
+  .range-btn.empty{ color: var(--ink-soft); border-style: dashed; }
+  .range-btn .len{ color: var(--ink-soft); font-size: 11px; white-space:nowrap; }
+  .clear-btn{
+    border:none; background:none; color: var(--ink-soft);
+    cursor:pointer; font-size: 16px; line-height:1; padding: 2px;
   }
-  .col-labels span:nth-child(2){ padding-left: 2px; }
+  .clear-btn:hover{ color: var(--red); }
+  .clear-btn[disabled]{ visibility:hidden; }
 
-  /* right side */
+  /* ---------- правая часть ---------- */
   .readout{
     background: var(--ink);
     color: #fdf9ee;
@@ -148,10 +120,10 @@
     padding: 20px 22px;
     margin-bottom: 20px;
     display:flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 12px;
   }
   .readout .big{
     font-family:'IBM Plex Mono', monospace;
@@ -160,26 +132,21 @@
     color: var(--amber);
     line-height: 1;
   }
-  .readout .big span{ font-size: 16px; color: #fdf9ee; font-weight:500; margin-left: 6px;}
+  .readout .big span{ font-size: 16px; color: #fdf9ee; font-weight:500; margin-left: 8px; }
   .readout .sub{
     font-size: 12.5px;
     color: #cfc9b5;
     font-family:'IBM Plex Mono', monospace;
     text-align: right;
-    line-height: 1.6;
+    line-height: 1.7;
   }
   .readout .sub b{ color: #fdf9ee; }
+  .readout .sub .dup{ color: #f0b389; }
 
   .track-panel{ padding-bottom: 18px; }
 
-  .slider-row{
-    display:flex; align-items:center; gap: 12px;
-    margin: 4px 4px 18px;
-  }
-  .slider-row input[type=range]{
-    flex:1;
-    accent-color: var(--amber);
-  }
+  .slider-row{ display:flex; align-items:center; gap: 12px; margin: 4px 4px 14px; }
+  .slider-row input[type=range]{ flex:1; accent-color: var(--amber); }
   .nudge{
     font-family:'IBM Plex Mono', monospace;
     border:1px solid var(--paper-line);
@@ -191,16 +158,8 @@
   }
   .nudge:hover{ border-color: var(--teal); color: var(--teal); }
 
-  .ruler-scroll{
-    overflow-x: auto;
-    padding-bottom: 6px;
-  }
-
-  .ruler{
-    position: relative;
-    min-width: 900px;
-    user-select: none;
-  }
+  .ruler-scroll{ overflow-x: auto; padding: 38px 14px 8px; }
+  .ruler{ position: relative; min-width: 900px; user-select: none; }
 
   .axis{
     position: relative;
@@ -208,107 +167,67 @@
     border-bottom: 1px solid var(--paper-line);
     margin-bottom: 4px;
   }
-  .month-tick{
-    position:absolute;
-    top:0; bottom:0;
-    border-left: 1px solid var(--paper-line);
-  }
+  .month-tick{ position:absolute; top:0; bottom:0; border-left: 1px solid var(--paper-line); }
   .month-tick .lbl{
-    position:absolute;
-    top: 2px; left: 4px;
+    position:absolute; top: 2px; left: 4px;
     font-family:'IBM Plex Mono', monospace;
     font-size: 10.5px;
     color: var(--ink-soft);
     white-space:nowrap;
   }
 
-  .rows{
-    position: relative;
-  }
-  .row-track{
-    position: relative;
-    height: 26px;
-    border-bottom: 1px dashed #eae4d2;
-  }
+  .rows{ position: relative; }
+  .row-track{ position: relative; height: 26px; border-bottom: 1px dashed #eae4d2; }
+  .row-track.total{ border-top: 1.5px solid var(--ink); border-bottom: none; margin-top: 4px; }
   .period-bar{
-    position:absolute;
-    top: 5px; height: 16px;
+    position:absolute; top: 5px; height: 16px;
     border-radius: 4px;
-    background: var(--teal);
     opacity: 0.28;
   }
   .period-bar-overlap{
-    position:absolute;
-    top: 5px; height: 16px;
+    position:absolute; top: 5px; height: 16px;
     border-radius: 4px;
     box-shadow: inset 0 0 0 1.5px rgba(38,36,24,0.35);
   }
-  .overlap-note{
-    font-family:'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--ink-soft);
-    display:flex;
-    align-items:center;
-    gap: 8px;
-    margin: 12px 4px 0;
+  .seg-one, .seg-multi{ position:absolute; top: 5px; height: 16px; }
+  .seg-one{ background: var(--ink); }
+  .seg-multi{
+    background: repeating-linear-gradient(45deg, var(--red) 0 4px, #e9a48f 4px 8px);
+    box-shadow: inset 0 0 0 1px var(--red);
   }
-  .overlap-note .sample{
-    display:inline-flex; height: 10px; width: 42px; border-radius: 3px; overflow:hidden;
-  }
-  .overlap-note .sample span{ flex:1; }
-  .overlap-note .sample .dim{ background: var(--teal); opacity:0.28; }
-  .overlap-note .sample .full{ background: var(--teal); }
   .empty-hint{
-    font-size: 13px;
-    color: var(--ink-soft);
+    font-size: 13px; color: var(--ink-soft);
     font-family:'IBM Plex Mono', monospace;
     padding: 20px 4px;
   }
 
-  .window-layer{
-    position:absolute;
-    top:0; bottom:0;
-    pointer-events:none;
-  }
+  /* рамка окна */
+  .window-layer{ position:absolute; top:0; bottom:0; left:0; right:0; pointer-events:none; }
   .window-box{
-    position:absolute;
-    top: -30px; bottom: 0;
-    background: rgba(217,140,43,0.05);
-    border-left: 2px solid var(--amber-line);
-    border-right: 2px solid var(--amber-line);
+    position:absolute; top: 0; bottom: 0;
+    background: rgba(217,140,43,0.06);
+    border-left: 2px solid var(--amber);
+    border-right: 2px solid var(--amber);
     cursor: grab;
     pointer-events: auto;
+    touch-action: none;
   }
-  .window-box::before,
-  .window-box::after{
-    content:'';
-    position:absolute;
-    top: 30px; bottom: 0;
-    width: 0;
-    border-left: 1px dashed rgba(217,140,43,0.55);
-  }
-  .window-box::before{ left: 0; }
-  .window-box::after{ right: 0; }
   .window-box:active{ cursor: grabbing; }
   .window-box .tag{
     position:absolute;
-    top: -30px; left: 0;
-    transform: translateY(0);
+    top: -30px; left: 50%;
+    transform: translateX(-50%);
     background: var(--amber);
     color: #fff;
     font-family:'IBM Plex Mono', monospace;
-    font-size: 10.5px;
-    padding: 3px 7px;
-    border-radius: 4px 4px 0 0;
+    font-size: 11px;
+    padding: 4px 9px;
+    border-radius: 5px;
     white-space: nowrap;
-  }
-  .window-box .tag.right{
-    left: auto; right: 0;
-    border-radius: 4px 4px 0 0;
   }
 
   .legend{
-    display:flex; gap: 16px; flex-wrap: wrap;
+    display:flex; gap: 6px 16px; flex-wrap: wrap;
     margin-top: 14px;
     font-family:'IBM Plex Mono', monospace;
     font-size: 11.5px;
@@ -316,6 +235,91 @@
   }
   .legend .item{ display:flex; align-items:center; gap:6px; }
   .legend .sw{ width:10px; height:10px; border-radius:2px; }
+  .legend .sw.one{ background: var(--ink); }
+  .legend .sw.multi{ background: repeating-linear-gradient(45deg, var(--red) 0 3px, #e9a48f 3px 6px); }
+  .legend-sep{ width:100%; height:0; }
+  .overlap-note{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 11px; color: var(--ink-soft);
+    margin: 10px 4px 0; line-height: 1.6;
+  }
+
+  /* ---------- попап выбора периода ---------- */
+  .modal{
+    position: fixed; inset: 0;
+    background: rgba(38,36,24,.45);
+    display:flex; align-items:center; justify-content:center;
+    padding: 16px; z-index: 50;
+  }
+  .modal[hidden]{ display:none; }
+  .dialog{
+    background:#fffdf8;
+    border-radius: 12px;
+    width:100%; max-width: 680px;
+    max-height: 100%; overflow:auto;
+    padding: 18px 20px 16px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.3);
+  }
+  .dlg-top{ display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom: 12px; }
+  .dlg-title{ font-weight:700; font-size: 16px; display:flex; align-items:center; gap:8px; }
+  .dlg-title .sw{ width:12px; height:12px; border-radius:3px; display:inline-block; }
+  .dlg-sel{ display:flex; gap: 8px; flex-wrap:wrap; }
+  .chip{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    padding: 5px 10px;
+    border: 1px solid var(--paper-line);
+    border-radius: 6px;
+    background:#fff;
+  }
+  .chip.active{ border-color: var(--amber); background: var(--amber-soft); }
+
+  .cal-nav{ display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px; }
+  .cal-nav .grp{ display:flex; gap: 4px; }
+  .cal-nav button{
+    font-family:'IBM Plex Mono', monospace;
+    min-width: 32px; height: 30px;
+    border:1px solid var(--paper-line); background:#fff;
+    border-radius: 6px; cursor:pointer; font-size: 13px;
+  }
+  .cal-nav button:hover{ border-color: var(--teal); color: var(--teal); }
+
+  .months{ display:grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+  @media (max-width: 640px){
+    .months{ grid-template-columns: 1fr; }
+    .months .month:nth-child(2){ display:none; }
+  }
+  .month-title{ text-align:center; font-weight:600; font-size: 14px; margin: 6px 0 8px; }
+  .wd, .days{ display:grid; grid-template-columns: repeat(7, 1fr); }
+  .wd span{
+    text-align:center; font-size: 11px; color: var(--ink-soft);
+    font-family:'IBM Plex Mono', monospace; padding-bottom: 4px;
+  }
+  .day{
+    height: 34px; border:none; background:none; cursor:pointer;
+    font-family:'IBM Plex Mono', monospace; font-size: 13px; color: var(--ink);
+    padding:0;
+  }
+  .day:hover{ background: #f0ece0; }
+  .day.in{ background: var(--teal-soft); }
+  .day.edge{ background: var(--teal); color:#fff; border-radius: 6px; }
+  .day.today{ box-shadow: inset 0 0 0 1.5px var(--amber); }
+
+  .dlg-foot{
+    display:flex; justify-content:space-between; align-items:center; gap: 12px; flex-wrap:wrap;
+    margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--paper-line);
+  }
+  .dlg-hint{ font-size: 12.5px; color: var(--ink-soft); }
+  .dlg-btns{ display:flex; gap: 8px; }
+  .btn{
+    font-family:'Inter', sans-serif; font-size: 13.5px; font-weight:500;
+    padding: 8px 14px; border-radius: 7px; cursor:pointer;
+    border: 1px solid var(--paper-line); background:#fff; color: var(--ink);
+  }
+  .btn:hover{ border-color: var(--teal); }
+  .btn.primary{ background: var(--teal); border-color: var(--teal); color:#fff; }
+  .btn.danger:hover{ border-color: var(--red); color: var(--red); }
+  .btn[disabled]{ opacity: .45; cursor: not-allowed; }
 </style>
 </head>
 <body>
@@ -323,348 +327,462 @@
   <header>
     <p class="eyebrow">Планировщик · 180-дневное окно</p>
     <h1>Пересечение периодов с подвижным окном</h1>
-    <p>Укажите до 10 временных отрезков. Двигайте окно шириной 180 дней по календарю — счётчик покажет, сколько дней суммарно изо всех периодов попадает внутрь окна в текущей позиции.</p>
+    <p>Нажмите на строку, чтобы выбрать начало и конец периода в одном окне. Двигайте рамку шириной 180 дней по календарю — счётчик покажет, сколько дней из всех периодов попадает внутрь. Если периоды накладываются друг на друга, общие дни считаются один раз.</p>
   </header>
 
   <div class="grid">
-    <div class="panel" id="periods-panel">
+    <div class="panel">
       <h2>Периоды <span id="count-lbl">0 / 10</span></h2>
-      <div class="col-labels"><span></span><span>Начало</span><span>Конец</span><span></span></div>
       <div id="periods-list"></div>
     </div>
 
     <div>
       <div class="readout">
         <div class="big" id="overlap-days">0<span>дней в окне</span></div>
-        <div class="sub" id="window-range">окно: —</div>
+        <div class="sub" id="window-info">окно: —</div>
       </div>
 
       <div class="panel track-panel">
         <h2>Календарь <span id="domain-range"></span></h2>
         <div class="slider-row">
-          <button class="nudge" id="nudge-left" title="сдвинуть окно назад">◀</button>
-          <input type="range" id="window-slider" min="0" max="0" value="0" step="1">
-          <button class="nudge" id="nudge-right" title="сдвинуть окно вперёд">▶</button>
+          <button class="nudge" id="nudge-left" title="сдвинуть окно назад на неделю">◀</button>
+          <input type="range" id="window-slider" min="0" max="0" value="0" step="1" aria-label="Положение окна">
+          <button class="nudge" id="nudge-right" title="сдвинуть окно вперёд на неделю">▶</button>
         </div>
         <div class="ruler-scroll">
           <div class="ruler" id="ruler">
             <div class="axis" id="axis"></div>
             <div class="rows" id="rows"></div>
-            <div class="window-layer" id="window-layer">
+            <div class="window-layer">
               <div class="window-box" id="window-box">
-                <div class="tag" id="tag-left"></div>
-                <div class="tag right" id="tag-right"></div>
+                <div class="tag" id="window-tag"></div>
               </div>
             </div>
           </div>
         </div>
         <div class="legend" id="legend"></div>
         <div class="overlap-note">
-          <span class="sample"><span class="dim"></span><span class="full"></span><span class="dim"></span></span>
-          насыщенный участок с рамкой — часть периода внутри окна; бледный — вне окна
+          Бледная полоса — период целиком, насыщенная с рамкой — его часть внутри окна.
+          Нижняя строка «итого»: <b>тёмный</b> — день покрыт одним периодом, <b style="color:var(--red)">штриховка</b> — день покрыт несколькими периодами (в сумме считается один раз).
         </div>
       </div>
     </div>
   </div>
 </div>
 
+<!-- попап выбора периода -->
+<div class="modal" id="modal" hidden>
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dlg-title">
+    <div class="dlg-top">
+      <div class="dlg-title" id="dlg-title"></div>
+      <div class="dlg-sel">
+        <span class="chip" id="chip-start"></span>
+        <span class="chip" id="chip-end"></span>
+      </div>
+    </div>
+    <div class="cal-nav">
+      <div class="grp">
+        <button type="button" data-step="-12" title="год назад">«</button>
+        <button type="button" data-step="-1" title="месяц назад">‹</button>
+      </div>
+      <div class="grp">
+        <button type="button" data-step="today" title="к текущему месяцу">Сегодня</button>
+      </div>
+      <div class="grp">
+        <button type="button" data-step="1" title="месяц вперёд">›</button>
+        <button type="button" data-step="12" title="год вперёд">»</button>
+      </div>
+    </div>
+    <div class="months" id="months"></div>
+    <div class="dlg-foot">
+      <div class="dlg-hint" id="dlg-hint"></div>
+      <div class="dlg-btns">
+        <button type="button" class="btn danger" id="dlg-clear">Очистить</button>
+        <button type="button" class="btn" id="dlg-cancel">Отмена</button>
+        <button type="button" class="btn primary" id="dlg-ok">Готово</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
-const MS_DAY = 86400000;
-const WINDOW_DAYS = 180;
-const MAX_PERIODS = 10;
+const MS = 86400000;
+const WIN = 180;
+const MAX = 10;
 const COLORS = ['#3f7d78','#b3492f','#7a6ba8','#c98b2c','#4a7fb5','#8c9a3d','#a85a7e','#5c8f8a','#c26b3f','#6f7bb0'];
+const MONTHS = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+const MONTHS_S = ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
+const WD = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
 
-const listEl = document.getElementById('periods-list');
-const countLbl = document.getElementById('count-lbl');
+const $ = id => document.getElementById(id);
+const pad = x => String(x).padStart(2,'0');
+// даты хранятся как целое число дней от 1970-01-01 (UTC) — без проблем с часовыми поясами
+const dn = (y,m,d) => Math.floor(Date.UTC(y,m,d) / MS);
+const ymd = n => { const t = new Date(n*MS); return {y:t.getUTCFullYear(), m:t.getUTCMonth(), d:t.getUTCDate()}; };
+const fmt = n => { if(n == null) return '—'; const t = ymd(n); return `${pad(t.d)}.${pad(t.m+1)}.${t.y}`; };
+const todayN = () => { const t = new Date(); return dn(t.getFullYear(), t.getMonth(), t.getDate()); };
+const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
 
-function toDate(str){
-  if(!str) return null;
-  return new Date(str + 'T00:00:00Z');
-}
-function fmt(d){
-  if(!d) return '—';
-  return d.toLocaleDateString('ru-RU', {day:'2-digit', month:'short', year:'numeric', timeZone:'UTC'});
-}
-function daysBetween(a,b){ return Math.round((b-a)/MS_DAY); }
+/* ---------------- состояние ---------------- */
+const periods = Array.from({length: MAX}, () => ({s:null, e:null}));
+periods[0] = {s: dn(2026,0,10),  e: dn(2026,3,5)};
+periods[1] = {s: dn(2026,2,1),   e: dn(2026,6,20)};   // пересекается с №1 — для наглядности
+periods[2] = {s: dn(2026,7,15),  e: dn(2026,10,30)};
 
-// build 10 rows
-let rows = [];
-for(let i=0;i<MAX_PERIODS;i++){
+let domS = 0, domE = 0, domN = 1;   // границы календарной линии
+let winStart = null;                 // первый день окна (абсолютная дата)
+
+const activePeriods = () => periods
+  .map((p,i) => ({s:p.s, e:p.e, i, color: COLORS[i]}))
+  .filter(p => p.s != null && p.e != null);
+
+/* ---------------- список периодов ---------------- */
+const listEl = $('periods-list');
+periods.forEach((p,i) => {
   const row = document.createElement('div');
   row.className = 'period-row';
   row.innerHTML = `
     <span class="idx">${i+1}</span>
     <span class="swatch" style="background:${COLORS[i]}"></span>
-    <input type="date" class="start-input">
-    <input type="date" class="end-input">
-    <button class="clear-btn" title="очистить">×</button>
-  `;
-  // fix column layout: swatch should sit before inputs visually but grid col2 = idx col.. adjust below
+    <button type="button" class="range-btn" data-i="${i}"></button>
+    <button type="button" class="clear-btn" data-i="${i}" title="Очистить" aria-label="Очистить период ${i+1}">×</button>`;
   listEl.appendChild(row);
-  rows.push(row);
-}
-
-// re-lay grid columns properly: idx | swatch is squeezed; fix by adjusting grid-template via inline style already set (22px 1fr 1fr 20px) -> we have 5 children not 4. Fix template.
-document.querySelectorAll('.period-row').forEach(r=>{
-  r.style.gridTemplateColumns = '18px 12px 1fr 1fr 20px';
 });
 
-function getPeriods(){
-  const result = [];
-  rows.forEach((row, i)=>{
-    const s = row.querySelector('.start-input').value;
-    const e = row.querySelector('.end-input').value;
-    row.classList.remove('invalid');
-    if(s && e){
-      const sd = toDate(s), ed = toDate(e);
-      if(ed < sd){
-        row.classList.add('invalid');
-        return;
-      }
-      result.push({start: sd, end: ed, color: COLORS[i], idx: i+1});
-    }
+function refreshList(){
+  let filled = 0;
+  listEl.querySelectorAll('.period-row').forEach((row,i) => {
+    const p = periods[i];
+    const btn = row.querySelector('.range-btn');
+    const clr = row.querySelector('.clear-btn');
+    const has = p.s != null && p.e != null;
+    if(has) filled++;
+    btn.classList.toggle('empty', !has);
+    btn.innerHTML = has
+      ? `<span>${fmt(p.s)} — ${fmt(p.e)}</span><span class="len">${p.e - p.s + 1} дн.</span>`
+      : `<span>Выбрать период…</span>`;
+    clr.disabled = !has;
   });
-  return result;
+  $('count-lbl').textContent = filled + ' / ' + MAX;
 }
 
-let windowStartOffset = 0; // days from domainStart
-let domainStart, domainEnd, domainDays;
-
-function recompute(){
-  const periods = getPeriods();
-  countLbl.textContent = periods.length + ' / 10';
-
-  // domain
-  const today = new Date(Date.UTC(new Date().getUTCFullYear(), new Date().getUTCMonth(), new Date().getUTCDate()));
-  if(periods.length){
-    let minS = periods[0].start, maxE = periods[0].end;
-    periods.forEach(p=>{
-      if(p.start < minS) minS = p.start;
-      if(p.end > maxE) maxE = p.end;
-    });
-    domainStart = new Date(minS.getTime() - 15*MS_DAY);
-    domainEnd = new Date(maxE.getTime() + 15*MS_DAY);
-  } else {
-    domainStart = today;
-    domainEnd = new Date(today.getTime() + 180*MS_DAY);
-  }
-  domainDays = daysBetween(domainStart, domainEnd) + 1;
-  if(domainDays < WINDOW_DAYS + 30){
-    domainEnd = new Date(domainStart.getTime() + (WINDOW_DAYS + 29)*MS_DAY);
-    domainDays = daysBetween(domainStart, domainEnd) + 1;
-  }
-
-  const maxOffset = Math.max(0, domainDays - WINDOW_DAYS);
-  windowStartOffset = Math.min(windowStartOffset, maxOffset);
-  windowStartOffset = Math.max(0, windowStartOffset);
-
-  const slider = document.getElementById('window-slider');
-  slider.max = maxOffset;
-  slider.value = windowStartOffset;
-
-  document.getElementById('domain-range').textContent = `${fmt(domainStart)} — ${fmt(domainEnd)}`;
-
-  renderAxis();
-  const bounds = currentWindowBounds();
-  renderRows(periods, bounds);
-  renderLegend(periods);
-  renderWindow(periods, bounds);
-}
-
-function currentWindowBounds(){
-  const wStartOffset = windowStartOffset;
-  const wEndOffset = wStartOffset + WINDOW_DAYS - 1;
-  const wStart = new Date(domainStart.getTime() + wStartOffset*MS_DAY);
-  const wEnd = new Date(domainStart.getTime() + wEndOffset*MS_DAY);
-  return {wStart, wEnd, wStartOffset, wEndOffset};
-}
-
-function pctFor(dateOffsetDays){
-  return (dateOffsetDays / domainDays) * 100;
-}
-
-function renderAxis(){
-  const axis = document.getElementById('axis');
-  axis.innerHTML = '';
-  // iterate months
-  let cur = new Date(Date.UTC(domainStart.getUTCFullYear(), domainStart.getUTCMonth(), 1));
-  if(cur < domainStart){ /* fine, we still show from first of month position possibly negative, clamp */ }
-  while(cur <= domainEnd){
-    const offset = daysBetween(domainStart, cur);
-    if(offset >= 0){
-      const pct = pctFor(offset);
-      const tick = document.createElement('div');
-      tick.className = 'month-tick';
-      tick.style.left = pct + '%';
-      const lbl = document.createElement('div');
-      lbl.className = 'lbl';
-      lbl.textContent = cur.toLocaleDateString('ru-RU', {month:'short', year:'2-digit', timeZone:'UTC'});
-      tick.appendChild(lbl);
-      axis.appendChild(tick);
-    }
-    cur = new Date(Date.UTC(cur.getUTCFullYear(), cur.getUTCMonth()+1, 1));
-  }
-}
-
-function renderRows(periods, bounds){
-  const rowsEl = document.getElementById('rows');
-  rowsEl.innerHTML = '';
-  if(!periods.length){
-    const hint = document.createElement('div');
-    hint.className = 'empty-hint';
-    hint.textContent = 'Добавьте даты слева — периоды появятся здесь на календаре.';
-    rowsEl.appendChild(hint);
-    return;
-  }
-  const wStart = bounds.wStart, wEnd = bounds.wEnd;
-  periods.forEach(p=>{
-    const track = document.createElement('div');
-    track.className = 'row-track';
-
-    // full period, muted
-    const startOff = Math.max(0, daysBetween(domainStart, p.start));
-    const endOff = Math.min(domainDays-1, daysBetween(domainStart, p.end));
-    const left = pctFor(startOff);
-    const width = pctFor(endOff - startOff + 1);
-    const bar = document.createElement('div');
-    bar.className = 'period-bar';
-    bar.style.left = left + '%';
-    bar.style.width = Math.max(width, 0.3) + '%';
-    bar.style.background = p.color;
-    bar.title = `Период ${p.idx}: ${fmt(p.start)} — ${fmt(p.end)}`;
-    track.appendChild(bar);
-
-    // overlapping segment, highlighted
-    const os = p.start > wStart ? p.start : wStart;
-    const oe = p.end < wEnd ? p.end : wEnd;
-    if(oe >= os){
-      const oStartOff = Math.max(0, daysBetween(domainStart, os));
-      const oEndOff = Math.min(domainDays-1, daysBetween(domainStart, oe));
-      const oLeft = pctFor(oStartOff);
-      const oWidth = pctFor(oEndOff - oStartOff + 1);
-      const overlapDays = daysBetween(os, oe) + 1;
-      const seg = document.createElement('div');
-      seg.className = 'period-bar-overlap';
-      seg.style.left = oLeft + '%';
-      seg.style.width = Math.max(oWidth, 0.3) + '%';
-      seg.style.background = p.color;
-      seg.title = `Период ${p.idx}: пересечение с окном — ${overlapDays} дн. (${fmt(os)} — ${fmt(oe)})`;
-      track.appendChild(seg);
-    }
-
-    rowsEl.appendChild(track);
-  });
-}
-
-function renderLegend(periods){
-  const legend = document.getElementById('legend');
-  legend.innerHTML = '';
-  periods.forEach(p=>{
-    const item = document.createElement('div');
-    item.className = 'item';
-    item.innerHTML = `<span class="sw" style="background:${p.color}"></span> №${p.idx}: ${fmt(p.start)} — ${fmt(p.end)}`;
-    legend.appendChild(item);
-  });
-}
-
-function renderWindow(periods, bounds){
-  if(!bounds) bounds = currentWindowBounds();
-  const {wStart, wEnd, wStartOffset} = bounds;
-
-  const box = document.getElementById('window-box');
-  const left = pctFor(wStartOffset);
-  const width = pctFor(WINDOW_DAYS);
-  box.style.left = left + '%';
-  box.style.width = width + '%';
-
-  document.getElementById('tag-left').textContent = fmt(wStart);
-  document.getElementById('tag-right').textContent = fmt(wEnd);
-  document.getElementById('window-range').innerHTML = `окно: <b>${fmt(wStart)} — ${fmt(wEnd)}</b> (180 дней)`;
-
-  let total = 0;
-  periods.forEach(p=>{
-    const os = p.start > wStart ? p.start : wStart;
-    const oe = p.end < wEnd ? p.end : wEnd;
-    if(oe >= os){
-      total += daysBetween(os, oe) + 1;
-    }
-  });
-  document.getElementById('overlap-days').innerHTML = total + '<span>дней в окне</span>';
-}
-
-// events: inputs
-listEl.addEventListener('input', recompute);
-listEl.addEventListener('click', (e)=>{
-  if(e.target.classList.contains('clear-btn')){
-    const row = e.target.closest('.period-row');
-    row.querySelector('.start-input').value = '';
-    row.querySelector('.end-input').value = '';
+listEl.addEventListener('click', e => {
+  const rb = e.target.closest('.range-btn');
+  if(rb){ openDialog(+rb.dataset.i); return; }
+  const cb = e.target.closest('.clear-btn');
+  if(cb && !cb.disabled){
+    periods[+cb.dataset.i] = {s:null, e:null};
     recompute();
   }
 });
 
-function refreshWindowAndBars(){
-  const periods = getPeriods();
-  const bounds = currentWindowBounds();
-  renderWindow(periods, bounds);
-  renderRows(periods, bounds);
+/* ---------------- расчёт и отрисовка ---------------- */
+function recompute(){
+  const act = activePeriods();
+  const t = todayN();
+  let minS = null;
+  if(act.length){
+    minS = Math.min(...act.map(p => p.s));
+    const maxE = Math.max(...act.map(p => p.e));
+    domS = minS - 15;
+    domE = maxE + 15;
+  } else {
+    domS = t;
+    domE = t + WIN + 29;
+  }
+  if(domE - domS + 1 < WIN + 30) domE = domS + WIN + 29;
+  domN = domE - domS + 1;
+
+  if(winStart == null) winStart = act.length ? minS : domS;
+  winStart = clamp(winStart, domS, domE - WIN + 1);
+
+  $('window-slider').max = domN - WIN;
+  $('domain-range').textContent = `${fmt(domS)} — ${fmt(domE)}`;
+
+  refreshList();
+  renderAxis();
+  renderDynamic();
 }
 
-// slider
-const slider = document.getElementById('window-slider');
-slider.addEventListener('input', ()=>{
-  windowStartOffset = parseInt(slider.value, 10);
-  refreshWindowAndBars();
-});
+const pct = offsetDays => (offsetDays / domN) * 100;
 
-document.getElementById('nudge-left').addEventListener('click', ()=>{
-  windowStartOffset = Math.max(0, windowStartOffset - 7);
-  slider.value = windowStartOffset;
-  refreshWindowAndBars();
-});
-document.getElementById('nudge-right').addEventListener('click', ()=>{
-  windowStartOffset = Math.min(parseInt(slider.max,10), windowStartOffset + 7);
-  slider.value = windowStartOffset;
-  refreshWindowAndBars();
-});
+function renderAxis(){
+  const axis = $('axis');
+  axis.innerHTML = '';
+  const a = ymd(domS), b = ymd(domE);
+  const totalMonths = (b.y - a.y) * 12 + (b.m - a.m) + 1;
+  const every = Math.max(1, Math.ceil(totalMonths / 18));   // чтобы подписи не слипались
+  let k = 0;
+  for(let y = a.y, m = a.m; y < b.y || (y === b.y && m <= b.m); k++){
+    const n = dn(y, m, 1);
+    if(n >= domS && n <= domE){
+      const tick = document.createElement('div');
+      tick.className = 'month-tick';
+      tick.style.left = pct(n - domS) + '%';
+      if(k % every === 0){
+        tick.innerHTML = `<div class="lbl">${MONTHS_S[m]} ${String(y).slice(2)}</div>`;
+      }
+      axis.appendChild(tick);
+    }
+    m++; if(m > 11){ m = 0; y++; }
+  }
+}
 
-// drag on window box
-const windowBox = document.getElementById('window-box');
-const ruler = document.getElementById('ruler');
-let dragging = false;
-let dragStartX = 0;
-let dragStartOffset = 0;
+function renderDynamic(){
+  const act = activePeriods();
+  const ws = winStart, we = winStart + WIN - 1;
 
-windowBox.addEventListener('pointerdown', (e)=>{
+  $('window-slider').value = ws - domS;
+
+  // покрытие каждого дня окна: сколько периодов его накрывает
+  const cnt = new Uint8Array(WIN);
+  act.forEach(p => {
+    const a = Math.max(p.s, ws), b = Math.min(p.e, we);
+    for(let d = a; d <= b; d++) cnt[d - ws]++;
+  });
+  let union = 0, raw = 0;
+  for(let i = 0; i < WIN; i++){ if(cnt[i] > 0) union++; raw += cnt[i]; }
+  const dup = raw - union;
+
+  // рамка
+  const box = $('window-box');
+  box.style.left = pct(ws - domS) + '%';
+  box.style.width = pct(WIN) + '%';
+  $('window-tag').textContent = `${fmt(ws)} → ${fmt(we)}`;
+
+  // показания
+  $('overlap-days').innerHTML = `${union}<span>дней в окне</span>`;
+  $('window-info').innerHTML =
+    `окно: <b>${fmt(ws)} — ${fmt(we)}</b> (${WIN} дн.)` +
+    (dup > 0
+      ? `<br>сумма периодов: ${raw} дн. · <span class="dup">наложения учтены один раз: −${dup}</span>`
+      : '');
+
+  renderRows(act, ws, we, cnt);
+  renderLegend(act);
+}
+
+function renderRows(act, ws, we, cnt){
+  const rowsEl = $('rows');
+  rowsEl.innerHTML = '';
+  if(!act.length){
+    rowsEl.innerHTML = '<div class="empty-hint">Нажмите на любую строку слева, чтобы добавить период.</div>';
+    return;
+  }
+
+  act.forEach(p => {
+    const track = document.createElement('div');
+    track.className = 'row-track';
+
+    const bar = document.createElement('div');
+    bar.className = 'period-bar';
+    bar.style.left = pct(p.s - domS) + '%';
+    bar.style.width = Math.max(pct(p.e - p.s + 1), 0.3) + '%';
+    bar.style.background = p.color;
+    bar.title = `Период ${p.i+1}: ${fmt(p.s)} — ${fmt(p.e)}`;
+    track.appendChild(bar);
+
+    const os = Math.max(p.s, ws), oe = Math.min(p.e, we);
+    if(oe >= os){
+      const seg = document.createElement('div');
+      seg.className = 'period-bar-overlap';
+      seg.style.left = pct(os - domS) + '%';
+      seg.style.width = Math.max(pct(oe - os + 1), 0.3) + '%';
+      seg.style.background = p.color;
+      seg.title = `Период ${p.i+1} в окне: ${oe - os + 1} дн. (${fmt(os)} — ${fmt(oe)})`;
+      track.appendChild(seg);
+    }
+    rowsEl.appendChild(track);
+  });
+
+  // итоговая строка: каждый день окна — один раз
+  const total = document.createElement('div');
+  total.className = 'row-track total';
+  let i = 0;
+  while(i < WIN){
+    const cat = cnt[i] === 0 ? 0 : (cnt[i] === 1 ? 1 : 2);
+    let j = i;
+    while(j + 1 < WIN && (cnt[j+1] === 0 ? 0 : (cnt[j+1] === 1 ? 1 : 2)) === cat) j++;
+    if(cat > 0){
+      const seg = document.createElement('div');
+      seg.className = cat === 1 ? 'seg-one' : 'seg-multi';
+      seg.style.left = pct(ws + i - domS) + '%';
+      seg.style.width = Math.max(pct(j - i + 1), 0.2) + '%';
+      seg.title = (cat === 1 ? 'Один период' : 'Наложение периодов (считается один раз)') +
+                  `: ${fmt(ws + i)} — ${fmt(ws + j)}, ${j - i + 1} дн.`;
+      total.appendChild(seg);
+    }
+    i = j + 1;
+  }
+  rowsEl.appendChild(total);
+}
+
+function renderLegend(act){
+  const legend = $('legend');
+  legend.innerHTML = '';
+  act.forEach(p => {
+    const item = document.createElement('div');
+    item.className = 'item';
+    item.innerHTML = `<span class="sw" style="background:${p.color}"></span>№${p.i+1}: ${fmt(p.s)} — ${fmt(p.e)}`;
+    legend.appendChild(item);
+  });
+}
+
+/* ---------------- слайдер, кнопки, перетаскивание ---------------- */
+const slider = $('window-slider');
+function setWinStart(v){
+  winStart = clamp(v, domS, domE - WIN + 1);
+  renderDynamic();
+}
+slider.addEventListener('input', () => setWinStart(domS + parseInt(slider.value, 10)));
+$('nudge-left').addEventListener('click',  () => setWinStart(winStart - 7));
+$('nudge-right').addEventListener('click', () => setWinStart(winStart + 7));
+
+const windowBox = $('window-box');
+const ruler = $('ruler');
+let dragging = false, dragX = 0, dragStart = 0;
+windowBox.addEventListener('pointerdown', e => {
   dragging = true;
-  dragStartX = e.clientX;
-  dragStartOffset = windowStartOffset;
+  dragX = e.clientX;
+  dragStart = winStart;
   windowBox.setPointerCapture(e.pointerId);
 });
-windowBox.addEventListener('pointermove', (e)=>{
+windowBox.addEventListener('pointermove', e => {
   if(!dragging) return;
-  const rulerWidth = ruler.getBoundingClientRect().width;
-  const dxPx = e.clientX - dragStartX;
-  const dxDays = (dxPx / rulerWidth) * domainDays;
-  let newOffset = Math.round(dragStartOffset + dxDays);
-  const maxOffset = Math.max(0, domainDays - WINDOW_DAYS);
-  newOffset = Math.max(0, Math.min(maxOffset, newOffset));
-  windowStartOffset = newOffset;
-  slider.value = windowStartOffset;
-  refreshWindowAndBars();
+  const w = ruler.getBoundingClientRect().width;
+  const days = Math.round(((e.clientX - dragX) / w) * domN);
+  setWinStart(dragStart + days);
 });
-windowBox.addEventListener('pointerup', (e)=>{
+const endDrag = e => {
+  if(!dragging) return;
   dragging = false;
-  windowBox.releasePointerCapture(e.pointerId);
+  try{ windowBox.releasePointerCapture(e.pointerId); }catch(_){}
+};
+windowBox.addEventListener('pointerup', endDrag);
+windowBox.addEventListener('pointercancel', endDrag);
+
+/* ---------------- попап выбора периода ---------------- */
+const modal = $('modal');
+const monthsEl = $('months');
+let dlg = null;   // {i, a, b, hover, vy, vm}
+
+function openDialog(i){
+  const p = periods[i];
+  const base = p.s != null ? p.s : (winStart != null ? winStart : todayN());
+  const t = ymd(base);
+  dlg = {i, a: p.s, b: p.e, hover: null, vy: t.y, vm: t.m};
+  $('dlg-title').innerHTML = `<span class="sw" style="background:${COLORS[i]}"></span>Период ${i+1}`;
+  modal.hidden = false;
+  renderMonths();
+  document.body.style.overflow = 'hidden';
+  $('dlg-ok').focus({preventScroll:true});
+}
+function closeDialog(){
+  modal.hidden = true;
+  dlg = null;
+  document.body.style.overflow = '';
+}
+
+function monthHTML(y, m){
+  const lead = (new Date(Date.UTC(y, m, 1)).getUTCDay() + 6) % 7;     // неделя с понедельника
+  const days = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
+  let h = `<div class="month"><div class="month-title">${MONTHS[m]} ${y}</div>` +
+          `<div class="wd">${WD.map(w => `<span>${w}</span>`).join('')}</div><div class="days">`;
+  for(let k = 0; k < lead; k++) h += '<span></span>';
+  for(let d = 1; d <= days; d++) h += `<button type="button" class="day" data-n="${dn(y,m,d)}">${d}</button>`;
+  return h + '</div></div>';
+}
+
+function renderMonths(){
+  let h = '';
+  for(let k = 0; k < 2; k++){
+    const t = new Date(Date.UTC(dlg.vy, dlg.vm + k, 1));
+    h += monthHTML(t.getUTCFullYear(), t.getUTCMonth());
+  }
+  monthsEl.innerHTML = h;
+  paint();
+}
+
+function paint(){
+  const {a, b, hover} = dlg;
+  let lo = null, hi = null;
+  if(a != null && b != null){ lo = Math.min(a,b); hi = Math.max(a,b); }
+  else if(a != null){
+    const h = hover != null ? hover : a;
+    lo = Math.min(a,h); hi = Math.max(a,h);
+  }
+  const t = todayN();
+  monthsEl.querySelectorAll('.day').forEach(btn => {
+    const n = +btn.dataset.n;
+    btn.classList.toggle('in',   lo != null && n >= lo && n <= hi);
+    btn.classList.toggle('edge', lo != null && (n === lo || n === hi));
+    btn.classList.toggle('today', n === t);
+  });
+
+  const picking = a != null && b == null;
+  $('chip-start').textContent = 'Начало: ' + fmt(a != null && b != null ? Math.min(a,b) : a);
+  $('chip-end').textContent   = 'Конец: '  + fmt(b != null ? Math.max(a,b) : null);
+  $('chip-start').classList.toggle('active', !picking);
+  $('chip-end').classList.toggle('active', picking);
+
+  const ready = a != null && b != null;
+  $('dlg-ok').disabled = !ready;
+  $('dlg-hint').textContent =
+    a == null ? 'Выберите дату начала периода.' :
+    !ready    ? 'Теперь выберите дату конца периода.' :
+                `Период: ${Math.abs(b - a) + 1} дн. Нажмите на любую дату, чтобы выбрать заново.`;
+}
+
+monthsEl.addEventListener('click', e => {
+  const btn = e.target.closest('.day');
+  if(!btn || !dlg) return;
+  const n = +btn.dataset.n;
+  if(dlg.a == null || dlg.b != null){          // начинаем новый выбор
+    dlg.a = n; dlg.b = null;
+  } else {                                      // второй клик — конец
+    dlg.b = n;
+    if(dlg.b < dlg.a){ const x = dlg.a; dlg.a = dlg.b; dlg.b = x; }
+  }
+  dlg.hover = null;
+  paint();
+});
+monthsEl.addEventListener('mouseover', e => {
+  const btn = e.target.closest('.day');
+  if(!btn || !dlg || dlg.a == null || dlg.b != null) return;
+  dlg.hover = +btn.dataset.n;
+  paint();
+});
+monthsEl.addEventListener('mouseleave', () => {
+  if(dlg && dlg.hover != null){ dlg.hover = null; paint(); }
 });
 
-// initial demo values
-rows[0].querySelector('.start-input').value = '2026-01-10';
-rows[0].querySelector('.end-input').value = '2026-04-05';
-rows[1].querySelector('.start-input').value = '2026-03-01';
-rows[1].querySelector('.end-input').value = '2026-07-20';
-rows[2].querySelector('.start-input').value = '2026-08-15';
-rows[2].querySelector('.end-input').value = '2026-11-30';
+document.querySelector('.cal-nav').addEventListener('click', e => {
+  const btn = e.target.closest('button');
+  if(!btn || !dlg) return;
+  if(btn.dataset.step === 'today'){
+    const t = ymd(todayN()); dlg.vy = t.y; dlg.vm = t.m;
+  } else {
+    const t = new Date(Date.UTC(dlg.vy, dlg.vm + parseInt(btn.dataset.step, 10), 1));
+    dlg.vy = t.getUTCFullYear(); dlg.vm = t.getUTCMonth();
+  }
+  renderMonths();
+});
+
+$('dlg-ok').addEventListener('click', () => {
+  if(!dlg || dlg.a == null || dlg.b == null) return;
+  periods[dlg.i] = {s: Math.min(dlg.a, dlg.b), e: Math.max(dlg.a, dlg.b)};
+  closeDialog();
+  recompute();
+});
+$('dlg-clear').addEventListener('click', () => {
+  if(!dlg) return;
+  periods[dlg.i] = {s:null, e:null};
+  closeDialog();
+  recompute();
+});
+$('dlg-cancel').addEventListener('click', closeDialog);
+modal.addEventListener('click', e => { if(e.target === modal) closeDialog(); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape' && dlg) closeDialog(); });
 
 recompute();
 </script>
